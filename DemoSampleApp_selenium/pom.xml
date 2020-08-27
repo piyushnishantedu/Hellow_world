@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>demoPortal_SeleniumTestCases</groupId>
+  <artifactId>demoPortal_SeleniumTestCases</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source/>
+          <target/>
+        </configuration>
+      </plugin>
+      
+   <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>2.19.1</version>
+			<configuration>
+				<suiteXmlFiles>
+				<!-- TestNG suite XML files -->
+					<suiteXmlFile>testng.xml</suiteXmlFile>
+				</suiteXmlFiles>
+			</configuration>
+	</plugin>
+    </plugins>
+  </build>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.seleniumhq.selenium</groupId>
+  		<artifactId>selenium-java</artifactId>
+  		<version>3.3.1</version>
+  	</dependency>
+  
+<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>6.11</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.maven.surefire/surefire-api -->
+<dependency>
+    <groupId>org.apache.maven.surefire</groupId>
+    <artifactId>surefire-api</artifactId>
+    <version>2.19.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/sqljdbc4 -->
+<!-- https://mvnrepository.com/artifact/net.sourceforge.jtds/jtds -->
+
+
+  </dependencies>
+</project>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jmeter-maven-plugin-example</artifactId>
+    <groupId>com.lazerycode.jmeter</groupId>
+    <version>DEV-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <description>
+        Executes a JMeter test.
+
+        Invoke with "mvn verify -Pperformance"
+    </description>
+
+    <properties>
+        <jmeter.analysis.maven.plugin.version>1.0.6</jmeter.analysis.maven.plugin.version>
+        <jmeter-maven-plugin.version>2.0.3</jmeter-maven-plugin.version>
+        <test.duration>30</test.duration>
+        <test.threads>10</test.threads>
+    </properties>
+
+    <profiles>
+
+        <profile>
+            <id>performance</id>
+            <build>
+                <plugins>
+                    <!-- execute JMeter test -->
+                    <plugin>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>jmeter-maven-plugin</artifactId>
+                        <version>${jmeter-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>test</id>
+                                <goals>
+                                    <goal>jmeter</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <propertiesUser>
+                                <!--A user which accesses all URLs-->
+                                <threadgroup00.name>test</threadgroup00.name>
+                                <!--number of threads to use-->
+                                <threadgroup00.numberOfThreads>${test.threads}</threadgroup00.numberOfThreads>
+                                <!--delay of the test in seconds-->
+                                <threadgroup00.scheduledDelay>0</threadgroup00.scheduledDelay>
+                                <!--duration of the test in seconds-->
+                                <threadgroup00.scheduledDuration>${test.duration}</threadgroup00.scheduledDuration>
+                                <!--how long till all threads are up and running in seconds-->
+                                <threadgroup00.rampUp>1</threadgroup00.rampUp>
+								<hostname>${hostname}</hostname>
+								<port>${port}</port>
+								<context>${context}</context>
+                            </propertiesUser>
+                            <ignoreResultFailures>true</ignoreResultFailures>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>jmeter-analysis-maven-plugin</artifactId>
+                        <version>${jmeter.analysis.maven.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>analyze</goal>
+                                </goals>
+                                <phase>post-integration-test</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!--
+                            source file that contains jmeter result data. Needs to be XML format or a GZIPed XML format
+                            -->
+                            <source>${project.build.directory}/jmeter/results/*</source>
+
+                            <!--
+                            directory where to store analysis report files. At least a file "summary.txt" will be stored here.
+                            -->
+                            <targetDirectory>${project.build.directory}/reports</targetDirectory>
+
+                            <!--
+                            Defines groups of requests by URL patterns,
+                            e.g. URIs starting with /mock/page are associated with group "pages". All analysis results are
+                            If there is no such mapping then the threadgroups from the jmeter.xml are used.
+                            -->
+                            <!--<requestGroups>-->
+                            <!--<test>/en-US/firefox/**</test>-->
+                            <!--</requestGroups>-->
+
+                            <!--
+                            Mapping from resource URL to file name. Every resource will be downloaded and stored in 'targetDirectory'
+                            with the given filename. Tokens "_FROM_" and "_TO_" can be used as placeholders. These placeholders will
+                            be replaced by timestamps of execution interval (formatted as ISO8601, e.g. '20111216T145509+0100').
+                            -->
+                            <!--<remoteResources>-->
+                            <!--<property>-->
+                            <!--<name>http://yourhost/path?from=_FROM_&amp;to=_TO_</name>-->
+                            <!--<value>my_resource.txt</value>-->
+                            <!--</property>-->
+                            <!--</remoteResources>-->
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <!-- in case we want to use a SNAPSHOT version of the jmeter-maven-plugin -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>sonatype-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>
